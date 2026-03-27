@@ -29,23 +29,27 @@ services:
             DB_HOST: srv-captain--$$cap_appname-db
             MM_SERVICESETTINGS_SITEURL: https://$$cap_appname.$$cap_root_domain
             MM_SQLSETTINGS_DATASOURCE: postgres://mmuser:$$cap_pg_pass@srv-captain--$$cap_appname-db:5432/mattermost?sslmode=disable&connect_timeout=10
+
+            MM_EMAILSETTINGS_SENDPUSHNOTIFICATIONS: tpns
+            MM_EMAILSETTINGS_PUSHNOTIFICATIONSERVER: https://push-test.mattermost.com
+            MM_SERVICESETTINGS_ENABLEPUSHNOTIFICATIONS: "true"
         caproverExtra:
             containerHttpPort: '8065'
 caproverOneClickApp:
     variables:
         - id: $$cap_mattermost_version
-          label: mattermost Docker Image tag. Use 'release-9.7' for example.
-          defaultValue: release-9.7
-          description: Check out their Docker page for the valid tags https://hub.docker.com/r/mattermost/mattermost-team-edition/tags
+          label: mattermost Docker Image tag. Use '11.5.1' for example.
+          defaultValue: 11.5.1
+          description: Check out their Docker page for the valid tags [https://hub.docker.com/r/mattermost/mattermost-team-edition/tags](https://hub.docker.com/r/mattermost/mattermost-team-edition/tags)
         - id: $$cap_postgres_version
           label: postgres database Docker Image tag. Use '14.3' for example.
           defaultValue: 14.3
-          description: Check out their Docker page for the valid tags https://hub.docker.com/_/postgres?tab=tags
+          description: Check out their Docker page for the valid tags [https://hub.docker.com/_/postgres?tab=tags](https://hub.docker.com/_/postgres?tab=tags)
         - id: $$cap_pg_pass
           label: Database Password
           description: Password must be at least 30 characters.  Please use a random string.
           defaultValue: $$cap_gen_random_hex(32)
-          validRegex: /^[^\@]{30,}$/
+          validRegex: /^[^\\@]{30,}$/
     instructions:
         start: Open-source collaboration/chat server Mattermost Team Edition. Note that version of mattermost is the E0 version, you do not need any licence to run it. This version is the one recommanded by mattermost to allow one click upgrade for E10 and E20 versions.
         end: Mattermost is deployed and available as srv-captain--$$cap_appname. Note that the application may take up to ten minutes to become available.
